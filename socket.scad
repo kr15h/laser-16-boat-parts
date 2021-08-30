@@ -3,26 +3,8 @@
 // Created: 29 Aug 2021
 // Author: Krisjanis Rijnieks
 
+include <variables.scad>
 use <Spiral_Extrude.scad>
-
-$fn = 90;
-
-socketFittingHeight = 16.5;
-socketFittingOuterRadius = 11;
-socketFittingInnerRadius = 9.5;
-
-socketMountCenterRadius = 18;
-socketMountSideRadius = 8;
-socketMountScrewOffset = 22;
-socketMountHeight = 4;
-socketMountScrewRadius = 2.5;
-socketMountScrewPocketDepth = 1;
-
-socketLipHeight = .5;
-
-socketThreadPitch = 2;
-socketThreadSize = 1.5;
-socketThreadZOffset =  5 + socketMountHeight - socketFittingHeight;
 
 Socket(
   fittingHeight = socketFittingHeight, 
