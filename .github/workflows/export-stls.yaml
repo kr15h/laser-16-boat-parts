@@ -15,8 +15,10 @@ jobs:
           mkdir stls
           openscad oring.scad -o stls/oring.stl
           openscad mold.scad -o stls/mold.stl
+          openscad socket.scad -o stls/socket.stl
+          openscad bung.scad -o stls/bung.stl
       - name: Upload generated artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: stls
+          name: laser-16-boat-parts-stls
           path: stls/
