@@ -2,10 +2,14 @@ name: Export STLs
 on: [push]
 jobs:
   Explore-GitHub-Actions:
-    runs-on: docker-openscad
+    runs-on: ubuntu-latest
     steps:
       - name: "Clone repository"
         uses: actions/checkout@v2
+      - name: "Install OpenSCAD"
+        run: |
+          sudo apt update
+          sudo apt install openscad
       - name: "Export stl files for 3D printing"
         run: |
           mkdir stls
