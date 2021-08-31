@@ -4,7 +4,7 @@
 // Author: Krisjanis Rijnieks
 
 include <variables.scad>
-use <Spiral_Extrude.scad>
+use <openscad_spiral_extrude/spiral_extrude.scad>
 
 BungBody(
   radius = bungOuterRadius,
