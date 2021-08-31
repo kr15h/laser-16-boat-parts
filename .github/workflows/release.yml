@@ -19,6 +19,8 @@ jobs:
           mkdir stls
           openscad oring.scad -o stls/oring.stl
           openscad mold.scad -o stls/mold.stl
+          openscad socket.scad -o stls/socket.stl
+          openscad bung.scad -o stls/bung.stl
           zip -rj stls.zip stls
 
       - name: "Create release"
