@@ -1,10 +1,31 @@
 # Laser 16 Boat Parts
 
-This repository is an experimental collection of Laser 16 boat parts to be 3D printed or manufactured in other ways. Use it at your own risk. At the moment it contains Laser L16 bung and socket for 3D printing or other manufacturing methods if you wish.
+This repository is an experimental collection of Laser 16 boat parts to be 3D printed or manufactured in other ways. Use it at your own risk. At the moment it contains Laser 16 bung and socket for 3D printing or other manufacturing methods if you wish.
+
+The o-ring is supposed to be cast out of silicone, that is why there is a mold. The fastest way to do it is to 3D print the mold (FDM + PLA) and mix small amount of rather less flexy silicone and thickener. Use a spatula or similar tool to smear the silicone paste into the mold. Wait.
+
+<table>
+<tr>
+<td><img src="images/bung.png"></td>
+<td><img src="images/socket.png"></td>
+<td><img src="images/oring.png"></td>
+<td><img src="images/mold.png"></td>
+</tr>
+<tr align="center">
+<td>bung.scad</td>
+<td>socket.scad</td>
+<td>oring.scad</td>
+<td>mold.scad</td>
+</tr>
+</table>
 
 ## Usage
 
-If you want to change the design using [OpenSCAD](https://openscad.org/), the repository should be initialized with submodules. The following commands will init and update them.
+You can download the 3D models from the Releases section. Pick a release and look for the Assets. Click on `stls`, it will initiate a download. Unzip the file and you will find the 3D mesh files that you can then use for manufacturing.
+
+3D models are generated automatically once changes are pushed to the repository. If you want to very latest 3D models, look under the Actions tab of the repository.
+
+If you want to generate the 3D files using [OpenSCAD](https://openscad.org/) yourself, the repository should be initialized with submodules. The following commands will init and update them.
 
 ```
 git submodule init
@@ -12,6 +33,17 @@ git submodule update
 ```
 
 Threads in the design make use of the [spiral_extrude](https://www.thingiverse.com/thing:1958354/apps) module by AKADAP. It has been added as a submodule and if you follow the instructions above, it should be cloned along with this repository.
+
+## Contributing
+
+After making changes to the code you might want to submit a pull request. One task to do before is to update images. You can use the `imgen.sh` script to do that for you (sorry, only Linux and maybe Mac).
+
+```
+chmod a+x imgen.sh
+./imgen.sh
+```
+
+This will generate new images in the `images` directory. These are used in the `README.md` file that you are currently reading.
 
 ## About Laser 16
 
