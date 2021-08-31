@@ -53,18 +53,23 @@ module BungThread(radius, pitch, size){
 module BungCap(radius, height, handleHeight, handleFilet){
   union(){
     cylinder(r = radius, h = height);
+  
     intersection(){
       cylinder(r = radius, h = height + handleHeight);
-      translate([-radius, 0, 0])
-      rotate([90, 0, 0])
-      linear_extrude(height = height, center = true){
-        offset(r = handleFilet){
-          offset(delta = -handleFilet){
-            square(
-              size = [radius*2, height + handleHeight], 
-              center = false);
-          }
-        }
+  
+      hull(){
+        translate([-radius, -height/2, height/2])
+        cube(size = [radius * 2, height, height]);
+  
+        translate([radius - handleFilet, 0, 
+          height + handleHeight -handleFilet])
+        rotate([90, 0, 0])
+        cylinder(r = handleFilet, h = height, center = true);
+  
+        translate([handleFilet - radius, 0, 
+          height + handleHeight - handleFilet])
+        rotate([90, 0, 0])
+        cylinder(r = handleFilet, h = height, center = true);
       }
     }
   }

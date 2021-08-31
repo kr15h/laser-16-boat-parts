@@ -21,8 +21,8 @@ bungThreadPitch = 2;
 bungThreadSize = 1;
 bungCapRadius = bungOuterRadius + 4;
 bungCapHeight = 4;
-bungHandleHeight = 10;
-bungHandleFilet = 3;
+bungHandleHeight = 12;
+bungHandleFilet = 6;
 
 oringInnerRadius = bungOuterRadius - 0.25;
 oringOuterRadius = oringInnerRadius + 4;
