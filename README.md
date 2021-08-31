@@ -2,7 +2,16 @@
 
 This repository is an experimental collection of Laser 16 boat parts to be 3D printed or manufactured in other ways. Use it at your own risk. At the moment it contains Laser L16 bung and socket for 3D printing or other manufacturing methods if you wish.
 
-Threads in the design make use of the [spiral_extrude](https://www.thingiverse.com/thing:1958354/apps) module by AKADAP. It is available on ThingiVerse and should be placed in the project folder along the files in this repository.
+## Usage
+
+If you want to change the design using [OpenSCAD](https://openscad.org/), the repository should be initialized with submodules. The following commands will init and update them.
+
+```
+git submodule init
+git submodule update
+```
+
+Threads in the design make use of the [spiral_extrude](https://www.thingiverse.com/thing:1958354/apps) module by AKADAP. It has been added as a submodule and if you follow the instructions above, it should be cloned along with this repository.
 
 ## About Laser 16
 
