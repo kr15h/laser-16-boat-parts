@@ -1,7 +1,7 @@
 name: Export STLs
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  export-stls:
     runs-on: ubuntu-latest
     steps:
       - name: "Clone repository"
@@ -16,6 +16,7 @@ jobs:
           openscad oring.scad -o stls/oring.stl
           openscad mold.scad -o stls/mold.stl
       - name: Upload generated artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: stls
+          path: stls/
