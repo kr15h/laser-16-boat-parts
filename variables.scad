@@ -15,6 +15,7 @@ socketThreadZOffset =  5 + socketMountHeight - socketFittingHeight;
 socketLipHeight = .5;
 
 bungOuterRadius = socketFittingInnerRadius - 0.25;
+bungInnerRadius = bungOuterRadius - 3;
 bungBodyHeight = socketFittingHeight;
 bungThreadPitch = 2;
 bungThreadSize = 1;

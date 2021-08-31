@@ -7,8 +7,13 @@ include <variables.scad>
 use <openscad_spiral_extrude/spiral_extrude.scad>
 
 BungBody(
-  radius = bungOuterRadius,
+  outerRadius = bungOuterRadius,
+  innerRadius = bungInnerRadius,
   height = bungBodyHeight);
+
+RetainingClip(
+  height = bungBodyHeight * 3, 
+  radius = bungInnerRadius);
 
 translate([0, 0, -bungBodyHeight])
 BungThread(
@@ -22,9 +27,15 @@ BungCap(
   handleHeight = bungHandleHeight,
   handleFilet = bungHandleFilet);
 
-module BungBody(radius, height){
-  mirror([0, 0, 1])
-  cylinder(r = radius, h = height);
+module BungBody(outerRadius, innerRadius, height){
+  difference(){
+    mirror([0, 0, 1])
+    cylinder(r = outerRadius, h = height);
+    
+    mirror([0, 0, 1])
+    translate([0, 0, height / 3])
+    cylinder(r = innerRadius, h = height / 3 * 2 + 1);
+  }
 }
 
 module BungThread(radius, pitch, size){
@@ -56,5 +67,27 @@ module BungCap(radius, height, handleHeight, handleFilet){
         }
       }
     }
+  }
+}
+
+module RetainingClip(height = 50, radius = 2, size = 2){
+  union(){
+    mirror([0, 0, 1])
+    translate([radius, 0, 0])
+    cylinder(h = height, d = size);
+  
+    translate([radius, -size / 2, -height])
+    cube(size = [size * 3, size, size]);
+  
+    mirror([0, 0, 1])
+    translate([-radius, 0, 0])
+    cylinder(h = height, d = size);
+  
+    translate([-radius, -size / 2, -height])
+    mirror([1, 0, 0])
+    cube(size = [size * 3, size, size]);
+  
+    translate([0, 0, -height / 3 * 2])
+    cube(size = [radius * 2, size, size], center = true);
   }
 }
