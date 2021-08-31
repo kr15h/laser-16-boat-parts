@@ -1,0 +1,3 @@
+[submodule "openscad_spiral_extrude"]
+	path = openscad_spiral_extrude
+	url = https://github.com/kr15h/openscad_spiral_extrude
