@@ -6,9 +6,8 @@ jobs:
     steps:
       - name: "Clone repository"
         uses: actions/checkout@v2
-        run: |
-          git submodule init
-          git submodule update
+        with:
+          submodules: true
       - name: "Install OpenSCAD"
         run: |
           sudo apt update
