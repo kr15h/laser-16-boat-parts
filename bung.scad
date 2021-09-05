@@ -1,5 +1,5 @@
 // Name: Bung
-// Description: 
+// Description:
 // Bung for L16 water socket at the back of the boat.
 // Created: 30 Aug 2021
 // Author: Krisjanis Rijnieks
@@ -11,76 +11,128 @@ Bung();
 
 module Bung(){
   union(){
-    translate([0, 0, -0.1])
     BungBody();
-
-    RetainingClip(
-      height = bungBodyHeight * 3, 
-      radius = socketFittingInnerRadius / 2);
-
-    BungCap(
-      radius = bungCapRadius,
-      height = bungCapHeight,
-      handleHeight = bungHandleHeight,
-      handleFilet = bungHandleFilet);
+    RetainingClip();
+    BungCap();
   }
 }
 
 module BungBody(){
+  translate([0, 0, 0.1])
   rotate([180, 0, 0])
   ScrewThread(
-    outer_diam = socketFittingInnerRadius * 2, 
-    height = bungBodyHeight, 
-    pitch = threadPitch, 
-    tooth_angle = threadToothAngle, 
-    tolerance = -threadTolerance, 
-    tip_height = threadPitch, 
+    outer_diam = threadDiameter,
+    height = threadHeight + 0.1,
+    pitch = threadPitch,
+    tooth_angle = threadToothAngle,
+    tolerance = -threadTolerance,
+    tip_height = threadPitch,
     tip_min_fract = 0.75);
 }
 
-module BungCap(radius, height, handleHeight, handleFilet){
+module BungCap(){
   union(){
-    cylinder(r = radius, h = height);
-  
+    
+    // Draw base of the cap
+    
+    cylinder(
+      d = bungCapDiameter, 
+      h = bungCapHeight);
+
+    // Use a cylinder to cut overlapping corners
+
     intersection(){
-      cylinder(r = radius, h = height + handleHeight);
-  
+      cylinder(
+        d = bungCapDiameter, 
+        h = bungCapHeight + bungHandleHeight);
+
       hull(){
-        translate([-radius, -height/2, height/2])
-        cube(size = [radius * 2, height, height]);
-  
-        translate([radius - handleFilet, 0, 
-          height + handleHeight -handleFilet])
+        
+        // Draw base of the cap
+        
+        translate([
+          -bungCapDiameter / 2, 
+          -bungCapHeight / 2, 
+          bungCapHeight / 2])
+        
+        cube(size = [
+          bungCapDiameter, 
+          bungCapHeight, 
+          bungCapHeight]);
+
+        // Draw top right filet
+
+        translate([
+          bungCapDiameter / 2 - bungHandleFilet, 0, 
+          bungCapHeight + bungHandleHeight - bungHandleFilet])
+        
         rotate([90, 0, 0])
-        cylinder(r = handleFilet, h = height, center = true);
-  
-        translate([handleFilet - radius, 0, 
-          height + handleHeight - handleFilet])
+        cylinder(
+          r = bungHandleFilet, 
+          h = bungCapHeight, 
+          center = true);
+
+        // Draw top left filet
+
+        translate([
+          bungHandleFilet - bungCapDiameter / 2, 0,
+          bungCapHeight + bungHandleHeight - bungHandleFilet])
+        
         rotate([90, 0, 0])
-        cylinder(r = handleFilet, h = height, center = true);
+        cylinder(
+          r = bungHandleFilet, 
+          h = bungCapHeight, 
+          center = true);
       }
     }
   }
 }
 
-module RetainingClip(height = 50, radius = 2, size = 2){
+module RetainingClip(){
   union(){
+    
+    // Draw right leg
+    
     mirror([0, 0, 1])
-    translate([radius, 0, 0])
-    cylinder(h = height, d = size);
-  
-    translate([radius, -size / 2, -height])
-    cube(size = [size * 3, size, size]);
-  
+    translate([threadDiameter / 4, 0, 0])
+    cylinder(
+      h = threadHeight * 3, 
+      d = bungRetainerDiameter);
+
+    translate([
+      threadDiameter / 4, 
+      -bungRetainerDiameter / 2, 
+      -threadHeight * 3])
+    cube(size = [
+      bungRetainerDiameter * 3, 
+      bungRetainerDiameter, 
+      bungRetainerDiameter]);
+    
+    // Draw left leg
+    
     mirror([0, 0, 1])
-    translate([-radius, 0, 0])
-    cylinder(h = height, d = size);
-  
-    translate([-radius, -size / 2, -height])
+    translate([-threadDiameter / 4, 0, 0])
+    cylinder(
+      h = threadHeight * 3, 
+      d = bungRetainerDiameter);
+
+    translate([
+      -threadDiameter / 4, 
+      -bungRetainerDiameter / 2, 
+      -threadHeight * 3])
     mirror([1, 0, 0])
-    cube(size = [size * 3, size, size]);
-  
-    translate([0, 0, -height / 3 * 2])
-    cube(size = [radius * 2, size, size], center = true);
+    cube(size = [
+      bungRetainerDiameter * 3, 
+      bungRetainerDiameter, 
+      bungRetainerDiameter]);
+      
+    // Draw bridge
+      
+    translate([0, 0, -threadHeight * 2])
+    cube(size = [
+      threadDiameter / 2,
+      bungRetainerDiameter,
+      bungRetainerDiameter],
+      center = true);
   }
 }

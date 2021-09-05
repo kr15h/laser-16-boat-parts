@@ -1,19 +1,22 @@
 // Name: Oring
-// Description: Oring for the bung/socket interface.
+// Description: 
+// Oring for the bung/socket interface.
 // Created: 30 Aug 2021
 // Author: Krisjanis Rijnieks
 
 include <variables.scad>
 
-Oring(
-  innerRadius = oringInnerRadius,
-  outerRadius = oringOuterRadius,
-  height = oringHeight
-);
+Oring();
 
-module Oring(innerRadius, outerRadius, height){
+module Oring(){
   difference(){
-    cylinder(r = oringOuterRadius, h = oringHeight, center = true);
-    cylinder(r = oringInnerRadius, h = oringHeight + 1, center = true);
+    cylinder(
+      d = threadDiameter + oringThickness * 2 + oringTolerance,
+      h = oringHeight,
+      center = true);
+    cylinder(
+      d = threadDiameter + oringTolerance,
+      h = oringHeight + 1,
+      center = true);
   }
 }
