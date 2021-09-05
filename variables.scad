@@ -2,7 +2,7 @@ $fn = 90;
 
 threadPitch = 2;
 threadToothAngle = 30;
-threadTolerance = 0.4;
+threadTolerance = 0.5;
 
 socketFittingHeight = 16.5;
 socketFittingOuterRadius = 11;

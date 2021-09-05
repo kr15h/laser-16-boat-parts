@@ -11,14 +11,12 @@ Bung();
 
 module Bung(){
   union(){
-    BungBody(
-      outerRadius = bungOuterRadius,
-      innerRadius = bungInnerRadius,
-      height = bungBodyHeight);
+    translate([0, 0, -0.1])
+    BungBody();
 
     RetainingClip(
       height = bungBodyHeight * 3, 
-      radius = bungInnerRadius);
+      radius = socketFittingInnerRadius / 2);
 
     BungCap(
       radius = bungCapRadius,
@@ -28,27 +26,16 @@ module Bung(){
   }
 }
 
-module BungBody(outerRadius, innerRadius, height){
-  union(){
-    mirror([0, 0, 1])
-    cylinder(r = bungOuterRadius, h = bungBodyHeight / 2);
-    
-    difference(){
-      rotate([180, 0, 0])
-      translate([0, 0, bungBodyHeight / 2])
-      AugerThread(
-        outer_diam = bungOuterRadius * 2 + bungThreadSize, 
-        inner_diam = bungOuterRadius * 2, 
-        height = bungBodyHeight / 2, 
-        pitch = bungThreadPitch, 
-        tooth_angle=45, tolerance=0, 
-        tip_height=bungThreadPitch, tip_min_fract=0.75);
-      
-      mirror([0, 0, 1])
-      translate([0, 0, bungBodyHeight / 2])
-      cylinder(r = bungInnerRadius, h = bungBodyHeight  / 2 + 1);
-    }
-  }
+module BungBody(){
+  rotate([180, 0, 0])
+  ScrewThread(
+    outer_diam = socketFittingInnerRadius * 2, 
+    height = bungBodyHeight, 
+    pitch = threadPitch, 
+    tooth_angle = threadToothAngle, 
+    tolerance = -threadTolerance, 
+    tip_height = threadPitch, 
+    tip_min_fract = 0.75);
 }
 
 module BungCap(radius, height, handleHeight, handleFilet){
