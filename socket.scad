@@ -26,6 +26,7 @@ module Socket(
   lipHeight){
     
   union(){
+    translate([0, 0, -socketMountHeight])
     SocketMount(
       centerRadius = mountCenterRadius,
       sideRadius = mountSideRadius,
@@ -34,8 +35,10 @@ module Socket(
       screwRadius = mountScrewRadius,
       screwPocketDepth = mountScrewPocketDepth);
     
+    translate([0, 0, -socketMountHeight / 2])
     SocketFitting();
 
+    translate([0, 0, -socketMountHeight])
     SocketLip(
       innerRadius = fittingInnerRadius,
       outerRadius = fittingOuterRadius,
