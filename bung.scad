@@ -1,52 +1,53 @@
-// Name: Plug
-// Description: Plug for L16 water socket at the back of the boat.
+// Name: Bung
+// Description: 
+// Bung for L16 water socket at the back of the boat.
 // Created: 30 Aug 2021
 // Author: Krisjanis Rijnieks
 
 include <variables.scad>
-use <openscad_spiral_extrude/spiral_extrude.scad>
+use <threads-scad/threads.scad>
 
-BungBody(
-  outerRadius = bungOuterRadius,
-  innerRadius = bungInnerRadius,
-  height = bungBodyHeight);
+Bung();
 
-RetainingClip(
-  height = bungBodyHeight * 3, 
-  radius = bungInnerRadius);
+module Bung(){
+  union(){
+    BungBody(
+      outerRadius = bungOuterRadius,
+      innerRadius = bungInnerRadius,
+      height = bungBodyHeight);
 
-translate([0, 0, -bungBodyHeight])
-BungThread(
-  radius = bungOuterRadius,
-  pitch = bungThreadPitch, 
-  size = bungThreadSize);
+    RetainingClip(
+      height = bungBodyHeight * 3, 
+      radius = bungInnerRadius);
 
-BungCap(
-  radius = bungCapRadius,
-  height = bungCapHeight,
-  handleHeight = bungHandleHeight,
-  handleFilet = bungHandleFilet);
-
-module BungBody(outerRadius, innerRadius, height){
-  difference(){
-    mirror([0, 0, 1])
-    cylinder(r = outerRadius, h = height);
-    
-    mirror([0, 0, 1])
-    translate([0, 0, height / 3])
-    cylinder(r = innerRadius, h = height / 3 * 2 + 1);
+    BungCap(
+      radius = bungCapRadius,
+      height = bungCapHeight,
+      handleHeight = bungHandleHeight,
+      handleFilet = bungHandleFilet);
   }
 }
 
-module BungThread(radius, pitch, size){
-  translate([0, 0, size])
-  extrude_spiral(
-    StartRadius = radius,
-    ZPitch = pitch, 
-    Angle = 1060, 
-    StepsPerRev = $fn){
+module BungBody(outerRadius, innerRadius, height){
+  union(){
+    mirror([0, 0, 1])
+    cylinder(r = bungOuterRadius, h = bungBodyHeight / 2);
     
-    square(size = [size*2, size], center = true);
+    difference(){
+      rotate([180, 0, 0])
+      translate([0, 0, bungBodyHeight / 2])
+      AugerThread(
+        outer_diam = bungOuterRadius * 2 + bungThreadSize, 
+        inner_diam = bungOuterRadius * 2, 
+        height = bungBodyHeight / 2, 
+        pitch = bungThreadPitch, 
+        tooth_angle=45, tolerance=0, 
+        tip_height=bungThreadPitch, tip_min_fract=0.75);
+      
+      mirror([0, 0, 1])
+      translate([0, 0, bungBodyHeight / 2])
+      cylinder(r = bungInnerRadius, h = bungBodyHeight  / 2 + 1);
+    }
   }
 }
 
