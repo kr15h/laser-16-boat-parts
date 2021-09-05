@@ -1,5 +1,9 @@
 $fn = 90;
 
+threadPitch = 2;
+threadToothAngle = 30;
+threadTolerance = 0.4;
+
 socketFittingHeight = 16.5;
 socketFittingOuterRadius = 11;
 socketFittingInnerRadius = 9.5;
@@ -9,8 +13,6 @@ socketMountScrewOffset = 22;
 socketMountHeight = 4;
 socketMountScrewRadius = 2.5;
 socketMountScrewPocketDepth = 1;
-socketThreadPitch = 2;
-socketThreadSize = 1.5;
 socketThreadZOffset =  5 + socketMountHeight - socketFittingHeight;
 socketLipHeight = .5;
 

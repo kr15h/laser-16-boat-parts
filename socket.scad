@@ -4,7 +4,7 @@
 // Author: Krisjanis Rijnieks
 
 include <variables.scad>
-use <openscad_spiral_extrude/spiral_extrude.scad>
+use <threads-scad/threads.scad>
 
 Socket(
   fittingHeight = socketFittingHeight, 
@@ -16,67 +16,59 @@ Socket(
   mountHeight = socketMountHeight,
   mountScrewRadius = socketMountScrewRadius,
   mountScrewPocketDepth = socketMountScrewPocketDepth,
-  lipHeight = socketLipHeight,
-  threadPitch = socketThreadPitch,
-  threadSize = socketThreadSize,
-  threadZOffset = socketThreadZOffset
+  lipHeight = socketLipHeight
 );
 
 module Socket(
   fittingHeight, fittingOuterRadius, fittingInnerRadius,
   mountCenterRadius, mountSideRadius, mountScrewOffset,
   mountHeight, mountScrewRadius, mountScrewPocketDepth,
-  lipHeight, threadPitch, threadSize, threadZOffset){
+  lipHeight){
     
   union(){
-    difference(){
-      union(){
-        SocketMount(
-          centerRadius = mountCenterRadius,
-          sideRadius = mountSideRadius,
-          screwOffset = mountScrewOffset,
-          height = mountHeight,
-          screwRadius = mountScrewRadius,
-          screwPocketDepth = mountScrewPocketDepth);
+    SocketMount(
+      centerRadius = mountCenterRadius,
+      sideRadius = mountSideRadius,
+      screwOffset = mountScrewOffset,
+      height = mountHeight,
+      screwRadius = mountScrewRadius,
+      screwPocketDepth = mountScrewPocketDepth);
     
-        union(){
-          SocketFittingOuter(
-            height = fittingHeight,
-            outerRadius = fittingOuterRadius,
-            zOffset = mountHeight);
-      
-          SocketLip(
-            innerRadius = fittingInnerRadius,
-            outerRadius = fittingOuterRadius,
-            height = lipHeight, 
-            zOffset = mountHeight);
-        }
-      } 
-    
-      SocketFittingInner(
-        height = fittingHeight,
-        innerRadius = fittingInnerRadius,
-        zOffset = mountHeight);
-    }
-  
-    SocketThread(
-      pitch = threadPitch, 
-      size = threadSize, 
-      radius = fittingInnerRadius,
-      zOffset = threadZOffset);
+    SocketFitting();
+
+    SocketLip(
+      innerRadius = fittingInnerRadius,
+      outerRadius = fittingOuterRadius,
+      height = lipHeight, 
+      zOffset = mountHeight);   
+  } 
+}
+
+module SocketFitting(){
+  mirror([0, 0, 1])
+  difference(){
+    cylinder(
+      r = socketFittingOuterRadius, 
+      h = socketFittingHeight / 2);    
+    translate([0, 0, -0.5])
+    cylinder(
+      r = socketFittingInnerRadius, 
+      h = socketFittingHeight / 2 + 1);
   }
-}
-
-module SocketFittingOuter(height, outerRadius, zOffset){
-  mirror([0, 0, 1])
-  translate([0, 0, -zOffset])
-  cylinder(h = height, r = outerRadius, center = false);
-}
-
-module SocketFittingInner(height, innerRadius, zOffset){
-  mirror([0, 0, 1])
-  translate([0, 0, -zOffset - 0.5])
-  cylinder(h = height + 1, r = innerRadius, center = false);
+  
+  rotate([180, 0, 0])
+  translate([0, 0, socketFittingHeight / 2])
+  ScrewHole(
+    outer_diam = socketFittingInnerRadius * 2, 
+    height = socketFittingHeight / 2, 
+    pitch = threadPitch, 
+    position=[0,0,0], rotation=[0,0,0], 
+    tooth_angle = threadToothAngle, 
+    tolerance = 0){
+      cylinder(
+        r = socketFittingOuterRadius, 
+        h = socketFittingHeight / 2);
+    }
 }
 
 module SocketMount(
@@ -95,6 +87,10 @@ module SocketMount(
         screwOffset = screwOffset, 
         screwRadius = screwRadius, 
         height = height);
+      
+      cylinder(
+        r = socketFittingInnerRadius, 
+        h = height * 3, center = true);
     }
   
     SocketMountPockets(
@@ -140,22 +136,5 @@ module SocketLip(innerRadius, outerRadius, height, zOffset){
       [0, -0.1], [0, 0], 
       [thickness/2, height], [thickness, -0], 
       [thickness, -0.1]]);
-  }
-}
-
-module SocketThread(pitch, size, radius, zOffset){
-  translate([0, 0, zOffset])
-  rotate([0, 0, -80])
-  extrude_spiral(
-    StartRadius = radius,
-    ZPitch = pitch, 
-    Angle = 340, 
-    StepsPerRev = $fn){
-    
-    difference(){
-      circle(r = size);
-      mirror([0, 1, 0])
-      translate([-size, 0, 0]) square(size = size*2);
-    }
   }
 }
